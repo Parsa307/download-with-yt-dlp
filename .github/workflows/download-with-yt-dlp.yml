@@ -29,7 +29,9 @@ jobs:
           git config --global user.name "Parsast"
 
       - name: Download Video
-        run: yt-dlp -t mkv --embed-thumbnail --embed-metadata "${{ github.event.inputs.URL }}"
+        run: |
+          echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
+          yt-dlp -t mkv --embed-thumbnail --embed-metadata --cookies cookies.txt "${{ github.event.inputs.URL }}"
 
       - name: Push Downloaded Video to Repo
         run: |
