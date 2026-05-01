@@ -25,8 +25,7 @@ jobs:
           chmod a+rx ~/.local/bin/yt-dlp
 
       - name: Install ffmpeg
-        run: |
-          sudo apt install -yq ffmpeg
+        run: sudo apt install -yq ffmpeg
 
       - name: Configure Git
         run: |
