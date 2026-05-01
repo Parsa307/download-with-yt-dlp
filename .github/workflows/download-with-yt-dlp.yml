@@ -23,6 +23,10 @@ jobs:
           aria2c https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --dir ~/.local/bin -o yt-dlp
           chmod a+rx ~/.local/bin/yt-dlp
 
+      - name: Install ffmpeg
+        run: |
+          sudo apt install -yq ffmpeg
+
       - name: Configure Git
         run: |
           git config --global user.email "parsastdev@duck.com"
