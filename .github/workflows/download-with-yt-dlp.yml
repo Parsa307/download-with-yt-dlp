@@ -17,6 +17,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: downloads
 
       - name: Install yt-dlp
         run: |
