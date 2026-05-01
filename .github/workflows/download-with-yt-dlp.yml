@@ -36,6 +36,7 @@ jobs:
         run: |
           echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
           yt-dlp -t mkv --embed-thumbnail --embed-metadata --cookies cookies.txt --js-runtimes node "${{ github.event.inputs.URL }}"
+          rm cookies.txt
 
       - name: Push Downloaded Video to Repo
         run: |
