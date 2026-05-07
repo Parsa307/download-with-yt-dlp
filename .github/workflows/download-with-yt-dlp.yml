@@ -24,6 +24,11 @@ jobs:
           aria2c https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --dir ~/.local/bin -o yt-dlp
           chmod a+rx ~/.local/bin/yt-dlp
 
+      - name: Install deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | sh
+          ln -s ~/.deno/bin/deno ~/.local/bin/deno
+
       - name: Install ffmpeg
         run: sudo apt install -yq ffmpeg
 
@@ -35,7 +40,7 @@ jobs:
       - name: Download Video
         run: |
           echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
-          yt-dlp -t mkv --embed-thumbnail --embed-metadata --cookies cookies.txt --js-runtimes node "${{ github.event.inputs.URL }}"
+          yt-dlp -t mkv --embed-thumbnail --embed-metadata --cookies cookies.txt "${{ github.event.inputs.URL }}"
           rm cookies.txt
 
       - name: Push Downloaded Video to Repo
