@@ -1,0 +1,50 @@
+name: Download Videos with yt-dlp (releases) (no cookies)
+
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: 'URL'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install yt-dlp
+        run: |
+          aria2c https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --dir ~/.local/bin -o yt-dlp
+          chmod a+rx ~/.local/bin/yt-dlp
+
+      - name: Install deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | sh
+          ln -s ~/.deno/bin/deno ~/.local/bin/deno
+
+      - name: Install ffmpeg
+        run: sudo apt install -yq ffmpeg
+
+      - name: Download Video
+        run: yt-dlp -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata "${{ github.event.inputs.URL }}"
+
+      - name: Get Downloaded Filename
+        id: filename
+        run: echo "filename=$(ls -t | head -1)" >> $GITHUB_OUTPUT
+
+      - name: Set Version Info
+        id: version
+        run: echo "version=v$(date +%Y-%m-%d-%H%M)" >> $GITHUB_OUTPUT
+
+      - name: Create Release on GitHub
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          files: ${{ steps.filename.outputs.filename }}
+          name: ${{ steps.version.outputs.version }}

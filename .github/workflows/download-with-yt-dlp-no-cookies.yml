@@ -1,0 +1,47 @@
+name: Download Videos with yt-dlp (no cookies)
+
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: 'URL'
+        required: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: downloads
+
+      - name: Install yt-dlp
+        run: |
+          aria2c https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --dir ~/.local/bin -o yt-dlp
+          chmod a+rx ~/.local/bin/yt-dlp
+
+      - name: Install deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | sh
+          ln -s ~/.deno/bin/deno ~/.local/bin/deno
+
+      - name: Install ffmpeg
+        run: sudo apt install -yq ffmpeg
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "parsastdev@duck.com"
+          git config --global user.name "Parsast"
+
+      - name: Download Video
+        run: yt-dlp --embed-thumbnail --embed-metadata "${{ github.event.inputs.URL }}"
+
+      - name: Push Downloaded Video to Repo
+        run: |
+          git add -A
+          git commit -m "push downloaded video to repo"
+          git push -u origin downloads

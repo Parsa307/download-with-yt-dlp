@@ -7,3 +7,6 @@
 ۵. یک secret به نام `COOKIES` کدگذاری شده در base64 اضافه کنید در Settings -> Secrets and variables -> Actions -> New repository secret
 ۶. یک branch به نام `downloads` ایجاد کنید
 ۷. ورکفلو را با لینک ویدئو اجرا کنید
+
+> [!NOTE]
+> برای وب‌سایت‌های دیگر از ورکفلو بدون کوکی استفاده کنید

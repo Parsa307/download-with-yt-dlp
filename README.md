@@ -7,3 +7,6 @@
 5. Add a secret called `COOKIES` using the encoded base64 at Settings -> Secrets and variables -> Actions -> New repository secret
 6. Create a branch called `downloads`
 7. Run the workflow with the vid url
+
+> [!NOTE]
+> Use the no cookies workflow for other websites
