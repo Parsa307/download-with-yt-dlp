@@ -41,13 +41,8 @@ jobs:
         id: filename
         run: echo "filename=$(ls -t | head -1)" >> $GITHUB_OUTPUT
 
-      - name: Set Version Info
-        id: version
-        run: echo "version=v$(date +%Y-%m-%d-%H%M)" >> $GITHUB_OUTPUT
-
       - name: Create Release on GitHub
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ steps.version.outputs.version }}
+          draft: true
           files: ${{ steps.filename.outputs.filename }}
-          name: ${{ steps.version.outputs.version }}
