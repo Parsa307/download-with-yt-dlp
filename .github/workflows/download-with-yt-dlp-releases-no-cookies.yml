@@ -26,7 +26,7 @@ jobs:
         run: sudo apt install -yq ffmpeg
 
       - name: Download Video
-        run: yt-dlp -o "%(title)s.%(ext)s" --embed-metadata "${{ github.event.inputs.URL }}"
+        run: yt-dlp -o "%(title)s.%(ext)s" --embed-metadata --embed-subs --sub-langs en "${{ github.event.inputs.URL }}"
 
       - name: Get Downloaded Filename
         id: filename

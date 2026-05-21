@@ -38,7 +38,7 @@ jobs:
           git config --global user.name "Parsast"
 
       - name: Download Video
-        run: yt-dlp --embed-metadata "${{ github.event.inputs.URL }}"
+        run: yt-dlp --embed-metadata --embed-subs --sub-langs en "${{ github.event.inputs.URL }}"
 
       - name: Push Downloaded Video to Repo
         run: |
