@@ -28,7 +28,7 @@ jobs:
       - name: Download Video
         run: |
           echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
-          yt-dlp -o "%(title)s.%(ext)s" --embed-metadata --embed-subs --sub-langs en --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
+          yt-dlp -t mkv -o "%(title)s.%(ext)s" --embed-metadata --embed-subs --sub-langs en --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
           rm cookies.txt
 
       - name: Get Downloaded Filename
