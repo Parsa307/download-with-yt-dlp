@@ -40,7 +40,7 @@ jobs:
       - name: Download Video
         run: |
           echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
-          yt-dlp --embed-thumbnail --embed-metadata --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
+          yt-dlp --embed-metadata --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
           rm cookies.txt
 
       - name: Push Downloaded Video to Repo
