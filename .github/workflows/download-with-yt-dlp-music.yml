@@ -1,0 +1,50 @@
+name: Download Videos with yt-dlp (music)
+
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: 'URL'
+        required: true
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: downloads
+
+      - name: Install yt-dlp
+        run: |
+          aria2c https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --dir ~/.local/bin -o yt-dlp
+          chmod a+rx ~/.local/bin/yt-dlp
+
+      - name: Install deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | sh
+          ln -s ~/.deno/bin/deno ~/.local/bin/deno
+
+      - name: Install ffmpeg, mutagen
+        run: sudo apt install -yq ffmpeg python3-mutagen
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "parsastdev@duck.com"
+          git config --global user.name "Parsast"
+
+      - name: Download Audio
+        run: |
+          echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
+          yt-dlp -x --audio-format m4a --embed-thumbnail --embed-metadata --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
+          rm cookies.txt
+
+      - name: Push Downloaded Audio to Repo
+        run: |
+          git add -A
+          git commit -m "push downloaded audio to repo"
+          git push -u origin downloads

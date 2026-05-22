@@ -1,0 +1,42 @@
+name: Download Videos with yt-dlp (music) (releases)
+
+on:
+  workflow_dispatch:
+    inputs:
+      URL:
+        description: 'URL'
+        required: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install yt-dlp
+        run: |
+          aria2c https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp --dir ~/.local/bin -o yt-dlp
+          chmod a+rx ~/.local/bin/yt-dlp
+
+      - name: Install deno
+        run: |
+          curl -fsSL https://deno.land/install.sh | sh
+          ln -s ~/.deno/bin/deno ~/.local/bin/deno
+
+      - name: Install ffmpeg, mutagen
+        run: sudo apt install -yq ffmpeg python3-mutagen
+
+      - name: Download Audio
+        run: |
+          echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
+          yt-dlp -x --audio-format m4a -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
+          rm cookies.txt
+
+      - name: Get Downloaded Filename
+        id: filename
+        run: echo "filename=$(ls -t | head -1)" >> $GITHUB_OUTPUT
+
+      - name: Create Release on GitHub
+        uses: softprops/action-gh-release@v3
+        with:
+          draft: true
+          files: ${{ steps.filename.outputs.filename }}
