@@ -30,7 +30,7 @@ jobs:
           ln -s ~/.deno/bin/deno ~/.local/bin/deno
 
       - name: Install ffmpeg
-        run: sudo apt install -yq ffmpeg
+        run: sudo apt update && sudo apt install -yq ffmpeg
 
       - name: Configure Git
         run: |
@@ -38,7 +38,7 @@ jobs:
           git config --global user.name "Parsast"
 
       - name: Download Video
-        run: yt-dlp -t mkv --embed-metadata --embed-subs --sub-langs en "${{ github.event.inputs.URL }}"
+        run: yt-dlp --format bestvideo*+bestaudio/best --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv "${{ github.event.inputs.URL }}"
 
       - name: Push Downloaded Video to Repo
         run: |

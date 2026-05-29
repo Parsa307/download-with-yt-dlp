@@ -30,7 +30,7 @@ jobs:
           ln -s ~/.deno/bin/deno ~/.local/bin/deno
 
       - name: Install ffmpeg
-        run: sudo apt install -yq ffmpeg
+        run: sudo apt update && sudo apt install -yq ffmpeg
 
       - name: Configure Git
         run: |
@@ -40,7 +40,7 @@ jobs:
       - name: Download Video
         run: |
           echo "${{ secrets.COOKIES }}" | base64 -d > cookies.txt
-          yt-dlp -t mkv --embed-metadata --embed-subs --sub-langs en --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
+          yt-dlp --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies cookies.txt "${{ github.event.inputs.URL }}"
           rm cookies.txt
 
       - name: Push Downloaded Video to Repo
