@@ -6,6 +6,18 @@ on:
       URL:
         description: 'URL'
         required: true
+      QUALITY:
+        description: 'QUALITY'
+        required: true
+        default: 'bestvideo*+bestaudio/best'
+        type: choice
+        options:
+          - bestvideo*+bestaudio/best
+          - bestvideo[height<=1080]+bestaudio/best[height<=1080]
+          - bestvideo[height<=720]+bestaudio/best[height<=720]
+          - bestvideo[height<=480]+bestaudio/best[height<=480]
+          - bestvideo[height<=360]+bestaudio/best[height<=360]
+          - bestvideo[height<=240]+bestaudio/best[height<=240]
 
 jobs:
   push:
@@ -41,7 +53,7 @@ jobs:
         run: |
           mkdir -p ~/.cache/yt-dlp
           echo "${{ secrets.COOKIES }}" | base64 -d > ~/.cache/yt-dlp/cookies.txt
-          yt-dlp --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies ~/.cache/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
+          yt-dlp --format "${{ github.event.inputs.QUALITY }}" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies ~/.cache/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
 
       - name: Push Downloaded Video to Repo
         run: |

@@ -6,6 +6,18 @@ on:
       URL:
         description: 'URL'
         required: true
+      QUALITY:
+        description: 'QUALITY'
+        required: true
+        default: 'bestvideo*+bestaudio/best'
+        type: choice
+        options:
+          - bestvideo*+bestaudio/best
+          - bestvideo[height<=1080]+bestaudio/best[height<=1080]
+          - bestvideo[height<=720]+bestaudio/best[height<=720]
+          - bestvideo[height<=480]+bestaudio/best[height<=480]
+          - bestvideo[height<=360]+bestaudio/best[height<=360]
+          - bestvideo[height<=240]+bestaudio/best[height<=240]
 
 jobs:
   release:
@@ -26,7 +38,7 @@ jobs:
         run: sudo apt update && sudo apt install -yq ffmpeg
 
       - name: Download Video
-        run: yt-dlp -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv "${{ github.event.inputs.URL }}"
+        run: yt-dlp --format "${{ github.event.inputs.QUALITY }}" -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv "${{ github.event.inputs.URL }}"
 
       - name: Get Downloaded Filename
         id: filename
