@@ -1,4 +1,4 @@
-name: Download Videos with yt-dlp (music)
+name: Download Music with yt-dlp
 
 on:
   workflow_dispatch:
