@@ -38,7 +38,7 @@ jobs:
           git config --global user.name "Parsast"
 
       - name: Download Video
-        run: yt-dlp --format bestvideo*+bestaudio/best --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv "${{ github.event.inputs.URL }}"
+        run: yt-dlp --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv "${{ github.event.inputs.URL }}"
 
       - name: Push Downloaded Video to Repo
         run: |

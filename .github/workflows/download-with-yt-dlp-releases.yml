@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p ~/.cache/yt-dlp
           echo "${{ secrets.COOKIES }}" | base64 -d > ~/.cache/yt-dlp/cookies.txt
-          yt-dlp --format bestvideo*+bestaudio/best -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies ~/.cache/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
+          yt-dlp -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies ~/.cache/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
 
       - name: Get Downloaded Filename
         id: filename
