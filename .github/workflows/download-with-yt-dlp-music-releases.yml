@@ -27,9 +27,9 @@ jobs:
 
       - name: Download Audio
         run: |
-          mkdir -p ~/.cache/yt-dlp
-          echo "${{ secrets.COOKIES }}" | base64 -d > ~/.cache/yt-dlp/cookies.txt
-          yt-dlp --extract-audio --audio-format m4a -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --convert-thumbnails jpg --force-overwrites --sponsorblock-remove default --cookies ~/.cache/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
+          mkdir -p ~/Documents/yt-dlp
+          echo "${{ secrets.COOKIES }}" | base64 -d > ~/Documents/yt-dlp/cookies.txt
+          yt-dlp --extract-audio --audio-format m4a -o "%(title)s.%(ext)s" --embed-thumbnail --embed-metadata --convert-thumbnails jpg --force-overwrites --sponsorblock-remove default --cookies ~/Documents/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
 
       - name: Get Downloaded Filename
         id: filename

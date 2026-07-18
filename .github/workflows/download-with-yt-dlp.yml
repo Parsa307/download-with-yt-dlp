@@ -51,9 +51,9 @@ jobs:
 
       - name: Download Video
         run: |
-          mkdir -p ~/.cache/yt-dlp
-          echo "${{ secrets.COOKIES }}" | base64 -d > ~/.cache/yt-dlp/cookies.txt
-          yt-dlp --format "${{ github.event.inputs.QUALITY }}" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies ~/.cache/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
+          mkdir -p ~/Documents/yt-dlp
+          echo "${{ secrets.COOKIES }}" | base64 -d > ~/Documents/yt-dlp/cookies.txt
+          yt-dlp --format "${{ github.event.inputs.QUALITY }}" --embed-thumbnail --embed-metadata --embed-subs --sub-langs en --convert-thumbnails jpg --force-overwrites --remux-video mkv --sponsorblock-remove default --cookies ~/Documents/yt-dlp/cookies.txt "${{ github.event.inputs.URL }}"
 
       - name: Push Downloaded Video to Repo
         run: |
